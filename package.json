@@ -1,0 +1,11 @@
+{
+  "name": "pnpdice",
+  "version": "1.0.0",
+  "description": "Dice Bot for PnP",
+  "main": "index.js",
+  "license": "MIT",
+  "author": "Logge",
+  "dependencies": {
+    "discord.js": "^12.0.2"
+  }
+}
