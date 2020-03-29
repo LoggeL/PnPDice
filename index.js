@@ -15,6 +15,8 @@ client.on('ready', () => {
         if (!diceEmoji) throw Exception('Dice Emoji ' + i + ' not found')
         client.diceEmojis.push(diceEmoji)
     }
+    client.diceEmojis[10] = emoteGuild.emojis.cache.find(emoji => emoji.name === "DiceRoll")
+    if (!client.diceEmojis[10]) throw Exception('Dice Emoji ' + i + ' not found')
 })
 
 
@@ -30,32 +32,32 @@ client.on('message', message => {
     if (!dice || !Number(count) || !Number(dice)) return message.react('❓')
     if (count > 4) return message.reply('Maximal 4 Würfe auf einmal')
     if (dice > 1000) return message.reply('Maximal Würfel mit 1000 Augen')
-    console.log(count, 'W', dice)
-    message.channel.send(`Werfe ${count} Würfel mit ${dice} Augen...`).then(editMsg => roll(message, editMsg, count, dice, 1))
-})
+    for (let i = 0; i < count; i++) {
 
-function roll(originalMessage, editMessage, count, dice, c) {
+    }
+
     let throws = [`${count}W${dice}`, "⌛ *Die Würfel rollen...* ⌛"]
     let sum = 0
     for (let i = 0; i < count; i++) {
-        const roll = Math.floor(Math.random() * dice) + 1
-        sum += roll
-        const rollStr = ('0'.repeat(dice.length) + roll).slice(String(dice - 1).length * -1)
-        console.log(roll, rollStr)
-        const dices = String(rollStr).split('')
-        throws.push(dices.map(d => client.diceEmojis[d]).join(' '))
-    }
-    if (c == 3) {
-        throws[1] = [`<@${originalMessage.author.id}>\n🎲 Die Würfel sind gefallen: 🎲`]
-        throws.push(`Gesamte Augenzahl: ** ${sum} ** `)
-        return editMessage.edit(throws.join('\n'))
+        throws.push(new Array(String(dice - 1).length).fill(client.diceEmojis[10]).join(' '))
     }
 
-    editMessage.edit(throws.join('\n')).then(msg => {
+    message.channel.send(throws.join('\n')).then(editMessage => {
         setTimeout(() => {
-            roll(originalMessage, editMessage, count, dice, c + 1)
-        }, 500)
+            throws = [`<@${message.author.id}>\n🎲 Die Würfel sind gefallen: 🎲`]
+            for (let i = 0; i < count; i++) {
+                const roll = Math.floor(Math.random() * dice) + 1
+                sum += roll
+                const rollStr = ('0'.repeat(dice.length) + roll).slice(String(dice - 1).length * -1)
+                console.log(roll, rollStr)
+                const dices = String(rollStr).split('')
+                throws.push(dices.map(d => client.diceEmojis[d]).join(' '))
+            }
+            throws.push(`Gesamte Augenzahl: ** ${sum} ** `)
+            editMessage.edit(throws.join('\n'))
+        }, 1000 + Math.random() * 2000)
+
     })
-}
+})
 
 client.login(config.token)
