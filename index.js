@@ -30,7 +30,7 @@ client.on('message', message => {
     const [count, dice] = message.content.split('W')
     console.log(count, dice)
     if (!dice || !Number(count) || !Number(dice)) return message.react('❓')
-    if (count > 4) return message.reply('Maximal 4 Würfe auf einmal')
+    if (count > 10) return message.reply('Maximal 10 Würfe auf einmal')
     if (dice > 1000) return message.reply('Maximal Würfel mit 1000 Augen')
     for (let i = 0; i < count; i++) {
 
