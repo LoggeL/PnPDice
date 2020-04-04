@@ -32,12 +32,10 @@ client.on('message', message => {
     if (!dice || !Number(count) || !Number(dice)) return message.react('❓')
     if (count > 10) return message.reply('Maximal 10 Würfe auf einmal')
     if (dice > 1000) return message.reply('Maximal Würfel mit 1000 Augen')
-    for (let i = 0; i < count; i++) {
-
-    }
 
     let throws = [`${count}W${dice}`, "⌛ *Die Würfel rollen...* ⌛"]
     let sum = 0
+    // Rolling Animation
     for (let i = 0; i < count; i++) {
         throws.push(new Array(String(dice - 1).length).fill(client.diceEmojis[10]).join(' '))
     }
