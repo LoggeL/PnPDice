@@ -27,7 +27,7 @@ client.on('message', message => {
     if (message.author.bot) return
     if (!message.guild || message.channel.name !== "würfel") return
 
-    const [count, dice] = message.content.split('W')
+    const [count, dice] = message.content.toLowerCase().split('w')
     console.log(count, dice)
     if (!dice || !Number(count) || !Number(dice)) return message.react('❓')
     if (count > 10) return message.reply('Maximal 10 Würfe auf einmal')
